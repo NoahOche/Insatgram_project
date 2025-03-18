@@ -1,0 +1,74 @@
+{% load static %}
+{% include 'include.html' %}
+<link rel="stylesheet" href="{% static 'oticaasets/css/app.min.css' %}">
+<link rel="stylesheet" href="{% static 'oticaasets/css/style.css' %}">
+<link rel="stylesheet" href="{% static 'oticaasets/css/components.css' %}">
+<link rel="stylesheet" href="{% static 'oticaasets/css/custom.css' %}">
+<link rel="stylesheet" href="{% static 'css/all.min.css' %}" />
+
+<body>
+  
+
+  <div class="loader"></div>
+  <div id="app">
+    <div class="main-wrapper main-wrapper-1">
+   {% block content %}
+   {% endblock content %}
+      <div class="main-content">
+        <section class="section">
+        <div class="section-body">
+          <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+              <div class="card">
+                <div class="body">
+                  <div id="plist" class="people-list">
+                    <div class="chat-search text-info ">
+                      <h3>
+                     <strong> Chat with</strong>
+                      </h3>
+                      
+                    </div>
+                    <div class="m-b-20">
+                      <div id="chat-scroll">
+                        <ul class="chat-list list-unstyled m-b-0">
+                          {% for pro in profile %}
+                          
+                          <a href="{% url 'chat' pro.id_user %}"> 
+                            <li class="clearfix">
+                              <figure class="avatar float-left">
+                              <img src="{{ pro.profile_img.url }}" alt="avatar">
+                            </figure> 
+                              <div class="about">
+                                <div class="name">{{pro.user.username}}</div>
+                                <div class="status">
+                                  
+                                </div>
+                              </div>
+                            </li>
+                          </a>
+                      {% endfor %}
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+        </section>
+      </div>
+
+
+    </div>
+  </div>
+
+
+
+
+  </body>
+<!-- <script src="{% static 'oticaasets/js/app.min.js' %}"></script> -->
+<script src="{% static 'oticaasets/js/page/chat.js' %}"></script>
+<!-- <script src="{% static 'oticaasets/js/scripts.js' %}"></script> -->
+<!-- <script src="{% static 'oticaasets/js/custom.js' %}"></script> -->

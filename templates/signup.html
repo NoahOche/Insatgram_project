@@ -1,0 +1,30 @@
+{% extends 'authentication.html' %}
+{% load static %}
+
+{% block title %}
+Sign up
+{% endblock title %}
+
+{% block button %}
+<a href="{% url 'signin' %}" class="bg-[#000] px-6 py-3 rounded-md text-white">Login</a>
+{% endblock button %}
+
+{% block formtitle %}Sign Up{% endblock formtitle %}
+{% block form %}
+<form action="" method="POST">
+  {% csrf_token %}
+  <input type="text" placeholder="Username" name="username" value="{{ username }}"
+    class="bg-gray-200 mb-2 shadow-none border border-[#d3d5d8] w-full py-3 outline-none rounded-md px-6" />
+  <input type="email" placeholder="Email" name="email" value="{{ email }}"
+    class="bg-gray-200 mb-2 shadow-none border border-[#d3d5d8] w-full py-3 outline-none rounded-md px-6" />
+  <input type="password" placeholder="Password" name="password"
+    class="bg-gray-200 mb-2 shadow-none border border-[#d3d5d8] w-full py-3 outline-none rounded-md px-6" />
+  <input type="password" placeholder="Re-type Password" name="password2"
+    class="bg-gray-200 mb-2 shadow-none border border-[#d3d5d8] w-full py-3 outline-none rounded-md px-6" />
+  <button class="bg-gradient-to-br from-pink-500 py-3 rounded-md text-white text-xl to-red-400 w-full">Sign
+    Up</button>
+  <div class="text-center mt-5 space-x-2">
+    <p class="text-xl">Do you have an account? <a href="{% url 'signin' %}" class="text-pink-500">Login</a></p>
+  </div>
+</form>
+{% endblock form %}

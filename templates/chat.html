@@ -1,0 +1,137 @@
+{% load static %}
+{% include 'include.html' %}
+<link rel="stylesheet" href="{% static 'oticaasets/css/app.min.css' %}">
+<link rel="stylesheet" href="{% static 'oticaasets/css/style.css' %}">
+<link rel="stylesheet" href="{% static 'oticaasets/css/components.css' %}">
+<link rel="stylesheet" href="{% static 'oticaasets/css/custom.css' %}">
+<link rel="stylesheet" href="{% static 'css/all.min.css' %}" />
+
+<body>
+  
+
+  <div class="loader"></div>
+  <div id="app">
+    <div class="main-wrapper main-wrapper-1">
+{% block content %}
+{% endblock content %}
+
+      <div class="main-content">
+        <section class="section">
+        <div class="section-body">
+          <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+              <div class="card">
+                <div class="body">
+                  <div id="plist" class="people-list">
+                    <div class="chat-search text-info ">
+                     Chat With
+                    </div>
+                    <div class="m-b-20">
+                      <div id="chat-scroll">
+                        <ul class="chat-list list-unstyled m-b-0">
+                          {% for pro in all_profile %}
+                          <a href="{% url 'chat' pro.id_user %}">  
+                          {% if pro == receiver %}
+                            <li class="clearfix active">
+                              {% else %}
+                            <li class="clearfix">
+                              {% endif %}
+                              
+                              <div class="about">
+                                
+                                <div class="name"><figure class="avatar">
+                                  <img src="{{ pro.profile_img.url }}" alt="...">
+                                </figure> {{pro.user.username}}</div>
+                                <div class="status">
+                                  
+                                </div>
+                              </div>
+                            </li>
+                          </a>
+                      {% endfor %}
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">
+              <div class="card">
+
+                <div class="chat">
+
+                  <div class="chat-header clearfix ">
+                   
+                      <div class="chat-with">
+                        <a href="{% url 'profile' receiver.id_user %}"> <figure class="avatar">
+                          <img src="{{receiver.profile_img.url}}" alt="avatar">
+                        </figure> 
+                        {{receiver.user.username}}</div></a>
+                    
+                    <div style="float: right;">
+                      <div class="chat-about">
+                        
+                        
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+                <div class="chat-box">
+                  <div class="card-body chat-content">
+                    {% for message in messages %}
+                    {% if message.sender.id_user == user_profile.id_user %}
+                    <div class="chat-item chat-right">
+                      <img src="{{user_profile.profile_img.url}}">
+                      <span></span>
+                      <div class="chat-details">
+                        
+                        <div class="chat-text"> {{message.text}}</div>
+                        <div class="chat-time"> {{message.created | date:"l d F Y h:i a "}} </div>
+                      </div>
+                    </div>
+                    {% else %}
+                    <div class="chat-item chat-left ">
+                      
+                      <img src="{{receiver.profile_img.url}}">
+                      <div class="chat-details">
+                        <div class="chat-text"> {{message.text}}</div>
+                        <div class="chat-time">{{message.created | date:"l d F Y h:i a "}}</div>
+                      </div>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                  </div>
+                <div class="card-footer chat-form ">
+                  <form method="post" action="{% url 'message' %} ">
+                    {% csrf_token %}
+                    <input type="hidden" name="receiver" value="{{receiver.id_user}}">
+                    <input type="text" name="message" class="form-control " placeholder="Type a message">
+                    <button class="btn btn-primary">
+                      <i class="far fa-paper-plane"></i>
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+            </div>
+          </div>
+        </div>
+        </section>
+      </div>
+
+
+    </div>
+  </div>
+
+
+
+
+  </body>
+  <script src="{% static 'oticaasets/js/page/chat.js' %}"></script>
+
+  <!-- <script src="{% static 'oticaasets/js/app.min.js' %}"></script>
+<script src="{% static 'oticaasets/js/scripts.js' %}"></script>
+<script src="{% static 'oticaasets/js/custom.js' %}"></script> -->

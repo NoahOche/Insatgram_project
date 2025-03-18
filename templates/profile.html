@@ -1,0 +1,361 @@
+{% load static %}
+{% include 'include.html' %}
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
+  <link rel="stylesheet" href="{% static 'oticaasets/css/app.min.css' %}" />
+  <link rel="stylesheet" href="{% static 'oticaasets/css/style.css' %}" />
+  <link rel="stylesheet" href="{% static 'oticaasets/css/components.css' %}" />
+  <link rel="stylesheet" href="{% static 'oticaasets/css/custom.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/all.min.css' %}" />
+
+
+
+</head>
+
+<body>
+  <input type="hidden" value="{{ profile.id_user }}" id="userId" />
+  <div class="loader"></div>
+  <div id="app">
+    {% block content %}
+    {% endblock content %}
+    <div class="main-content">
+        <div class="section-body">
+          <!-- <div class="row mt-sm-4"> -->
+              <div class="row">
+                <div class="col-4  ">
+              <div class="card author-box">
+                <div class="card-body">
+
+                  <div class="author-box-center">
+                    <img alt="image" src="{{profile.profile_img.url}}" class="rounded-circle author-box-picture">
+                    <div class="clearfix"></div>
+                    <div class="author-box-name">
+                      <a href="#">{{profile.user.username}}</a>
+                    </div>
+                  </div>
+                  <div class="text-center">
+                    <div class="author-box-description">
+                      <p>
+                        {{profile.bio}}
+                      </p>
+                    </div>
+
+                  </div>
+                </div>
+                 
+              </div>
+
+                </div>
+                <div class="col-8"> 
+                  <div class="card">
+                    <div class="card-header">
+                      <h4>Social Book</h4>
+                    </div>
+    
+                    <div class="card-body">
+                      <ul class="list-unstyled user-progress list-unstyled-border list-unstyled-noborder">
+    
+    
+                        <li class="media">
+                          <div class="media-body">
+                            <div class="media-title">{{ posts.count }} Posts</div>
+                          </div>
+                          <div class="media-progressbar p-t-10">
+                            <div class="progress" data-height="6">
+                              <div class="progress-bar bg-primary" data-width="{{posts.count}}%"></div>
+                            </div>
+                          </div>
+                        </li>
+                        <li class="media">
+                          <div class="media-body">
+                            <div class="media-title"> <span id="followersCount">{{ followers.count }}</span> followers</div>
+                          </div>
+                          <div class="media-progressbar p-t-10">
+                            <div class="progress" data-height="6">
+                              <div class="progress-bar bg-warning" data-width="{{followers.count }}%"></div>
+                            </div>
+                          </div>
+                        </li>
+                        <li class="media">
+                          <div class="media-body">
+                            <div class="media-title"><span id="followingCount">{{ following.count }}</span> following</div>
+                          </div>
+                          <div class="media-progressbar p-t-10">
+                            <div class="progress" data-height="6">
+                              <div class="progress-bar bg-green" data-width="{{following.count}}%"></div>
+                            </div>
+                          </div>
+                        </li>
+                        {% if user_profile == profile %}
+                        {% else %}
+                        <li class="media">
+                          <div class="media-body">
+                            <div class="media-title">Status</div>
+                          </div>
+                          <div class="media-progressbar p-t-10">
+    
+                            {% if is_followed %}
+                            <button class="btn btn-dark" id="followBtn">
+                              &minus; Unfollow
+                            </button>
+                            {% else %}
+                            <button class="btn btn-primary" id="followBtn">
+                              &plus; Follow
+                            </button>
+                            {% endif %}
+    
+                          </div>
+                        </li>
+                        {% endif %}
+    
+    
+    
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                
+              </div>
+           
+
+            
+
+            <div class="col-12 ">
+              {% if user_profile == profile %}
+              <div class="card">
+                <div class="padding-20">
+                  <ul class="nav nav-tabs" id="myTab2" role="tablist">
+                    <li class="nav-item">
+                      <a class="nav-link active" id="profile-tab2" data-toggle="tab" href="#settings" role="tab"
+                        aria-selected="false">Setting</a>
+                    </li>
+                    {% else %}
+                    <section class="section">
+                      <div class="section-body">
+                        {% for post in posts %}
+                        <div class="row">
+                          <div class="col-12  ">
+                            <article class="article article-style-c">
+                              <div class="article-user mt-0 bg-gray ">
+                                <a href="{% url 'profile' post.profile.user_id  %}">
+                                  <figure class="avatar">
+                                    <img alt="image" src="{{ post.profile.profile_img.url }}">
+                                  </figure>
+                                  {{ post.profile.user }}
+                                </a>
+                              </div>
+                              <div class="article-header">
+                                <a href="{{ post.image.url }}">
+                                  <div class="article-image " data-background="{{ post.image.url }}">
+                                  </div>
+                                </a>
+
+                              </div>
+                              <div class="article-details">
+                                <div class="article-category">
+
+                                  {% if request.user.profile in post.liked.all %}
+                                  <i class="fas fa-heart text-2xl cursor-pointer" id="post-{{ post.post_id }}"></i>
+                                  {% else %}
+                                  <i class="far fa-heart text-2xl cursor-pointer" id="post-{{ post.post_id }}"></i>
+                                  {% endif %}
+                                  <span class=" float-right">
+                                    <a href="{{ post.image.url }}" download><i
+                                        class="fa fa-download text-2xl text-gray-600 cursor-pointer"></i></a>
+                                  </span>
+                                  <br>
+                                  <a href="#">{{post.created_at}}</a>
+                                </div>
+                                <div class="article-title">
+
+                                  <h2><a href="#">{{ post.caption }}</a></h2>
+                                </div>
+                                <div class="flex space-x-5 items-center">
+                                  <div class="flex -space-x-2 overflow-hidden" id="like-images-{{ post.post_id }}">
+
+                                    {% for liker in post.get_likers_header %}
+                                    <figure class='avatar mr-2 avatar-sm'>
+                                      <img src="{{ liker.profile_img.url }}" />
+                                    </figure>`
+
+                                    {% endfor %}
+                                  </div>
+                                  <div id="likes-no-{{ post.post_id }}">Liked by {{ post.liked.count }} people</div>
+                                </div>
+                                <!-- comments -->
+                                {% for comment in post.get_comments_header %}
+                                <div>
+                                  <span class="font-weight-bolder active "> <a
+                                      href="{% url 'profile' comment.profile.id_user %}"> @{{comment.profile}}</a></span>
+                                  <span class="font-weight-italic  blockquote"> {{ comment }}</span>
+                                  <span class="float-right small"><a href="#"> on {{comment.created_at}}</a> </span>
+                                </div>
+                                {% endfor %}
+
+ 
+                                <i class="fas fa-angle-down float-right" data-toggle="modal" data-target="#myModal{{post.post_id}}" >
+                                  See all comments
+</i>
+                                <!-- <div class="row">
+                                  <div class="form-group  col-12">
+                                    <form action="" method="post">
+                                      {% csrf_token %}
+                                      <input type="hidden" name="post_id" value="{{post.post_id}}" />
+                                      <input class="form-control" type="text" name="text"
+                                        placeholder="Post Comments ......" aria-label="Comment">
+                                    </form>
+
+                                  </div>
+                                </div> -->
+
+
+
+
+
+                              </div>
+
+
+
+                            </article>
+
+                           
+                          </div>
+
+                        </div>
+                      </div>
+                    </section>
+                    <div class="modal" id="myModal{{post.post_id}}" >
+                      <div class="modal-dialog  modal-dialog-scrollable " >
+                        <div class="modal-content">
+                    
+                          <!-- Modal Header -->
+                          <div class="modal-header">
+                            <h4 class="modal-title">Comments</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          </div>
+                    
+                          <!-- Modal body -->
+                         
+                        
+                          <div class="modal-body">
+                            {% for comment in post.comments.all %}    
+                            
+                            <div>
+                              <span class="font-weight-bolder active "> <a href="{% url 'profile' comment.profile.id_user %}"> @{{ comment.profile}}</a></span>
+                             <span class="font-weight-italic  blockquote">  {{ comment }}</span>
+                             <span class="float-right small"><a > on {{comment.created_at}}</a>  </span>
+                           </div>      
+
+                           {% empty %}   
+                   
+                           <div>
+                           <span class="font-weight-bolder  blockquote">Empty: no Comments</span>
+                           </div>
+                            {% endfor %}
+          
+                          </div>
+          
+                          <!-- Modal footer -->
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                          </div>
+                    
+                        </div>
+                      </div>
+                    </div>
+                    {% endfor %}
+
+
+                  </ul>
+                  {% endif %}
+
+                  {% if user_profile == profile %}
+                  <div class="tab-content tab-bordered" id="myTab3Content">
+                    <div class="tab-pane fade show" id="about" role="tabpanel" aria-labelledby="home-tab2">
+                    </div>
+                    <div class="tab-pane fade show " id="settings" role="tabpanel" aria-labelledby="profile-tab2">
+                      <form method="post" class="needs-validation" action="{% url 'updateprofile' %}"
+                        enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <div class="card-header">
+                          <h4>Edit Profile</h4>
+                        </div>
+
+
+
+
+                    </div>
+                    {% for message in messages %}
+                    {% if error == 'active' %}
+                    <div class="alert alert-danger">
+                      <strong>Error!</strong> {{message}}
+
+                      {% else %}
+                      <div class="alert alert-success">
+
+
+                        <strong>Success!</strong> {{message}}
+                        {% endif %}
+                      </div>
+                      {% endfor %}
+                      <div class="card-body">
+                        <div class="row">
+                          <div class="form-group  col-12">
+                            <label>UserName</label>
+                            <input type="text" class="form-control" required value="{{user_profile.user.username}}"
+                              name="name">
+                            <div class="invalid-feedback">
+                              Please fill in the first name
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="form-group  col-12">
+                            <label>Email</label>
+                            <input type="email" class="form-control" required value="{{user_profile.user.email}}"
+                              name="email">
+                            <div class="invalid-feedback">
+                              Please fill in the email
+                            </div>
+                          </div>
+                          <div class="row ml-1  col-12">
+                            <div class="custom-file mb-3">
+                              <input type="file" class="custom-file-input" id="customFile" name="profile_img">
+                              <label class="custom-file-label" for="customFile">Profile image</label>
+                              <div class="invalid-feedback">
+                                Please fill in the email
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="row col-12 ">
+                            <div class="form-group col-12">
+                              <label>Bio</label>
+                              <textarea name="biolife" class="form-control ">{{user_profile.bio}}</textarea>
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
+                      <div class="card-footer text-right">
+                        <button class="btn btn-primary">Save Changes</button>
+                      </div>
+                      </form>
+                    </div>
+                  </div>
+                  {% endif %}
+
+                </div>
+              </div>
+            </div>
+          <!-- </div> -->
+
+    </div>
+  </div>
+
+
+</body>

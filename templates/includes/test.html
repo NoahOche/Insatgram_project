@@ -1,0 +1,16 @@
+
+    <form action="{% url 'message' %}" method="POST">
+        {% csrf_token %}
+        text: <input type="text" name="message" >
+        To:<select name="receiver" id="">
+            {% for pro in profile %}
+            <option value="{{pro.id_user}}">
+                {{pro.user.username}}
+            </option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="submit">
+    </form>
+{% for message in messages %}
+<div>{{message.created | timesince}}</div>
+{% endfor %}

@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block navbar %}
+<div class="flex px-30 container mx-auto justify-between items-center">
+  <h1 class="text-3xl font-bold">Social Book</h1>
+  {% block button %}
+  <button class="bg-[#000] px-6 py-3 rounded-md text-white">Login</button>
+  {% endblock button %}
+</div>
+{% endblock navbar %}
+{% block body %}
+<div class="container mx-auto max-w-md max-w-xl my-12 p-6">
+  <h1 class="text-3xl font-semibold mb-6">{% block formtitle %}{% endblock formtitle %}</h1>
+  <div class="mb-6">
+    {% for message in messages %}
+    <p class="text-red-500">{{ message }}</p>
+    {% endfor %}
+  </div>
+  {% block form %}
+  {% endblock form %}
+</div>
+<!-- Footer -->
+<div class="fixed bottom-20 w-full ">
+  <div class="container mx-auto flex justify-between">
+    <div class="flex space-x-3">
+      <a href="">ABOUT</a>
+      <a href="">HELP</a>
+      <a href="">TERMS</a>
+      <a href="">PRIVACY</a>
+    </div>
+    <p class="text-gray-600">
+      &copy; Copyright 2023 by Genisys
+    </p>
+  </div>
+</div>
+{% endblock body %}

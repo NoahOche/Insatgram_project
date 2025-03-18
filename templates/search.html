@@ -1,0 +1,43 @@
+{% load static %}
+{% include 'include.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
+  <link rel="stylesheet" href="{% static 'oticaasets/css/app.min.css' %}"/>
+  <link rel="stylesheet" href="{% static 'oticaasets/css/style.css' %}"/>
+  <link rel="stylesheet" href="{% static 'oticaasets/css/components.css' %}"/>
+  <link rel="stylesheet" href="{% static 'oticaasets/css/custom.css' %}"/>
+  <link rel="stylesheet" href="{% static 'css/all.min.css' %}" />
+  <link rel='shortcut icon' type='image/x-icon' href="{% static 'img/log.png' %}" />
+  <title> Social Book</title>
+
+
+</head>
+
+<body>
+    <div class="loader"></div>
+    {% block content %}
+    {% endblock content %}
+    <div class="main-content">
+      <h2> suggested_profiles</h2>
+
+      <section class="section">
+      <div class="section-body">
+        <div class="row">
+          <div class="col-8">
+            <div class="invisible" id="searchResult">
+              <div class="body">
+               
+                
+               
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      
+      </div>
+      </section>
+    </div>

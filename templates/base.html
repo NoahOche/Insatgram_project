@@ -1,0 +1,25 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'css/main.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/all.min.css' %}" />
+  {% block customjs %}{% endblock customjs %}
+  <title>{% block title %}{% endblock title %}</title>
+</head>
+
+<body class="bg-gray-400">
+  {% block higherbody %}
+  {% endblock higherbody %}
+  <!-- Navbar -->
+  <nav class="sticky top-0 py-4 bg-white z-10">
+    {% block navbar %}{% endblock navbar %}
+  </nav>
+  {% block body %}{% endblock body %}
+</body>
+
+</html>

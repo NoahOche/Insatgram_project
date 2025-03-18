@@ -1,0 +1,61 @@
+
+<div class="rounded bg-white mb-6 card">
+  <!-- header -->
+  <div class="flex justify-between p-4 items-center" id="header">
+    <div class="flex space-x-5 items-center">
+      <a href="{% url 'profile' post.profile.id_user %}"> <img class="w-10 h-10 rounded-full" src="{{ post.profile.profile_img.url }}" />{{ post.profile.user }}</a>
+    </div>
+  </div>
+  <!-- body -->
+  <div id="body">
+    <a href="{{ post.image.url }}"><img src="{{ post.image.url }}" /></a>
+  </div>
+  <!-- footer -->
+  <div class="p-6 space-y-6" id="footer">
+    <div class="flex justify-between">
+      <div class="flex space-x-8">
+        {% for liker in post.get_likers_header %}
+        {% if request.user  == liker %}
+
+        <i class="fa fa-thumbs-down text-2xl cursor-pointer" id="post-{{ post.post_id }}"></i>
+        {% else %}
+        <!-- <dir>{{liker}}</dir> -->
+        <i class="fa fa-thumbs-up text-2xl cursor-pointer" id="post-{{ post.post_id }}"></i>
+        {% endif %}
+        {%endfor%}
+      </div>
+      <a href="{{ post.image.url }}" download><i class="fa fa-download text-2xl text-gray-600 cursor-pointer"></i></a>
+    </div>
+    <div class="flex flex-col space-y-0">
+      <h1 class="text-xl">{{ post.caption }}</h1>
+    </div>
+    <hr />
+    <div class="flex space-x-5 items-center">
+      <div class="flex -space-x-2 overflow-hidden" id="like-images-{{ post.post_id }}">
+        {% for liker in post.get_likers_header %}
+        <img class="inline-block h-8 w-8 rounded-full ring-2 ring-white" src="{{ liker.profile_img.url }}" />
+        {% endfor %}
+      </div>
+      <p id="likes-no-{{ post.post_id }}">Liked by {{ post.liked.count }} people</p>
+    </div>
+    <!-- comments -->
+    <div class="flex flex-col space-y-3">
+      {% for comment in post.comments.all %}
+      <div class="flex space-x-5 items-center" id="comment">
+        <img class="inline-block h-10 w-10 rounded-full ring-2 ring-white"
+          src="{{ comment.profile.profile_img.url }}" />
+        <p class="rounded-2xl bg-gray-100 px-4 py-3">{{ comment }}</p>
+      </div>
+      {% endfor %}
+      
+    </div>
+    <div class="rounded-2xl bg-gray-100 h-16 w-full px-5 flex justify-between items-center">
+     <form action="{% url 'index' %}" method="post">
+      {% csrf_token %}
+      <input type="hidden" name="post_id" value="{{post.post_id}}" />
+      <input type="text" class="bg-gray-100 h-full outline-none w-10/12" name="text" placeholder="post a comment..." />
+    </form>
+     
+    </div>
+  </div>
+</div>

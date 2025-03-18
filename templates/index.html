@@ -1,0 +1,158 @@
+{% load static %}
+{% include 'include.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
+  <link rel="stylesheet" href="{% static 'oticaasets/css/app.min.css' %}"/>
+  <link rel="stylesheet" href="{% static 'oticaasets/css/style.css' %}"/>
+  <link rel="stylesheet" href="{% static 'oticaasets/css/components.css' %}"/>
+  <link rel="stylesheet" href="{% static 'oticaasets/css/custom.css' %}"/>
+  <link rel="stylesheet" href="{% static 'css/all.min.css' %}" />
+  <link rel='shortcut icon' type='image/x-icon' href="{% static 'img/log.png' %}" />
+  <title> Social Book</title>
+
+
+</head>
+
+<body>
+    <div class="loader"></div>
+    {% block content %}
+    {% endblock content %}
+    <div class="main-content">
+      <section class="section">
+        <div class="section-body">
+          
+          {% for post in posts %}
+          <div class="row">
+            <div class="col-12  col-lg-8">
+              <article class="article article-style-c">
+                <div class="article-user mt-0 bg-gray ">
+                  <a href="{% url 'profile' post.profile.user_id  %}">
+                  <figure class="avatar">
+                  <img alt="image" src="{{ post.profile.profile_img.url }}">
+                </figure>
+                {{ post.profile.user }}</a>
+                </div>
+                <div class="article-header">
+                  <a href="{{ post.image.url }}">
+                  <div class="article-image " data-background="{{ post.image.url }}">
+                    </a>
+                  </div>
+                </div>
+                <div class="article-details">
+                  <div class="article-category">
+                    
+                      {% if request.user.profile in post.liked.all %}
+                      <i class="fas fa-heart text-2xl cursor-pointer" id="post-{{ post.post_id }}"></i>
+                      {% else %}
+                      <i class="far fa-heart text-2xl cursor-pointer" id="post-{{ post.post_id }}"></i>
+                      {% endif %}
+                    <span class=" float-right">
+                    <a href="{{ post.image.url }}" download><i class="fa fa-download text-2xl text-gray-600 cursor-pointer"></i></a>
+                    </span>
+<br>
+                    <a href="#">{{post.created_at}}</a>
+                  </div>
+                  <div class="article-title">
+
+                    <h2><a href="#">{{ post.caption }}</a></h2>
+                  </div>
+                  <div class="flex space-x-5 items-center">
+                    <div class="flex -space-x-2 overflow-hidden" id="like-images-{{ post.post_id }}">
+                      
+                      {% for liker in post.get_likers_header %}
+                      <figure class='avatar mr-2 avatar-sm'>
+                        <img src="{{ liker.profile_img.url }}"/> 
+                        </figure>`
+          
+                      {% endfor %}
+                    </div>
+                    <div id="likes-no-{{ post.post_id }}">Liked by {{ post.liked.count }} people</div>
+                  </div>
+                  <!-- comments -->
+                    {% for comment in post.get_comments_header  %}
+                    
+                    
+                  <div>
+                       <span class="font-weight-bolder active "> <a href="{% url 'profile' comment.profile.id_user %}"> @{{ comment.profile}}</a></span>
+                      <span class="font-weight-italic  blockquote">  {{ comment }}</span>
+                      <span class="float-right small"><a href="#"> on {{comment.created_at}}</a>  </span>
+                    </div>      
+                    {% endfor %}
+                              
+
+                  
+                  <i class="fas fa-angle-down float-right" data-toggle="modal" data-target="#myModal{{post.post_id}}" >
+                                                           See all comments
+                  </i>
+                                
+                    <!-- The Modal -->
+                    
+                    <div class="row">
+                      <div class="form-group  col-12">
+                        <form  action="{% url 'index' %}" method="post" >
+                          {% csrf_token %}
+                        <input type="hidden" name="post_id" value="{{post.post_id}}" />
+                        <input class="form-control" type="text"  name="text"  placeholder="Post Comments ......" aria-label="Comment" >
+                   </form>
+                     
+                      </div>
+                    </div>
+                      
+
+               
+               
+                   
+                  </div>
+  
+                
+              </article>
+            </div>
+          </div>
+          
+          </section>
+          <div class="modal" id="myModal{{post.post_id}}" style="margin-top: 100px;">
+            <div class="modal-dialog  modal-dialog-scrollable  ">
+              <div class="modal-content">
+          
+                <!-- Modal Header -->
+                <div class="modal-header">
+                  <h4 class="modal-title">Comments</h4>
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+          
+                <!-- Modal body -->
+               
+              
+                <div class="modal-body">
+                  {% for comment in post.comments.all %}    
+                  
+                  <div>
+                    <span class="font-weight-bolder active "> <a href="{% url 'profile' comment.profile.id_user %}"> @{{ comment.profile}}</a></span>
+                   <span class="font-weight-italic  blockquote">  {{ comment }}</span>
+                   <span class="float-right small"><a > on {{comment.created_at}}</a>  </span>
+                 </div>   
+                 {% empty %}   
+                   
+                 <div>
+                 <span class="font-weight-bolder  blockquote">Empty: no Comments</span>
+                 </div>
+                  {% endfor %}
+
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+          
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+
+        </div>
+  
+       
